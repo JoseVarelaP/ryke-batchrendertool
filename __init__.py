@@ -196,7 +196,7 @@ class RenderAllScenes(bpy.types.Operator):
 				## Update UI Info
 				sc.mytool.UIcurScene = scenename
 				sc.mytool.CurJob = (self.total - len(self.render_queue)) / self.total
-				sc.mytool.JobsLeft = "{} jobs completed of {}.".format(self.total - len(self.render_queue), self.total)
+				sc.mytool.JobsLeft = "{} {} completed of {}.".format(self.total - len(self.render_queue), "job" if (self.total - len(self.render_queue)) == 1 else "jobs" , self.total)
 				print(sc.mytool.CurJob)
 				
 				# And now, render!
@@ -227,6 +227,9 @@ class UIDemo(bpy.types.Panel):
 			row = layout.row()
 			row.operator('scenedbmanager.new_item', text='New')
 			row.operator('scenedbmanager.delete_item', text='Remove')
+
+			row = layout.row()
+			row.operator('scenedbmanager.import_from_markers', text='Import from Markers')
 			
 			if scene.ScenesDBlist_index >= 0 and scene.ScenesDB: 
 				item = scene.ScenesDB[scene.ScenesDBlist_index]

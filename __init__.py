@@ -303,7 +303,7 @@ class UIDemo(bpy.types.Panel):
 			layout.row().separator()
 			
 			layout.label(text="Tip: Press ESC on the render to cancel.", icon="INFO")
-		
+
 def register():
 	bpy.utils.register_class(RenderAllScenes)
 	bpy.utils.register_class(UIDemo)
@@ -338,3 +338,6 @@ def unregister():
 	
 	del bpy.types.Scene.ScenesDB
 	del bpy.types.Scene.ScenesDBlist_index
+
+if __name__ == "__main__":
+	register()

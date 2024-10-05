@@ -3,7 +3,7 @@ schema_version = "1.0.0"
 # Example of manifest file for a Blender extension
 # Change the values according to your extension
 id = "rykeshrk_batch_render"
-version = "0.1.0"
+version = "0.1.2"
 name = "RykeShrk's Batch Render Tool"
 tagline = "Batch render multiple scenes from the same project file into separate folders for post-production editing."
 maintainer = "RykeShrk <contact@rykeshrk.com>"

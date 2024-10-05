@@ -6,6 +6,9 @@ bl_info = {
 
 import bpy
 from datetime import datetime
+import textwrap
+
+wrapp = textwrap.TextWrapper(width=70)
 
 # Import UI classes for the list
 from . UIListDec import (MY_UL_List, LIST_OT_NewItem, LIST_OT_DeleteItem, LIST_OT_MoveItem)
@@ -243,17 +246,42 @@ class UIDemo(bpy.types.Panel):
 			
 			activeScenes = 0
 			for scene in scene.ScenesDB:
-				if scene.get("scene", False):
+				if scene.get("enabled", False):
 					activeScenes += 1
 					
 			if activeScenes > 0 and context.scene.mytool.OutputFolderLocation:
 				row = layout.row()
 				layout.operator(RenderAllScenes.bl_idname, icon="VIEW_CAMERA")
 			else:
+				### TODO: This can be optimized into its own method.
+				if not bpy.data.is_saved:
+					wList = wrapp.wrap(text="You haven't saved this blend file! Either set a output location or save the file before continuing.")
+					for text in wList:
+						row = layout.row(align = True)
+						row.alignment = 'EXPAND'
+						if( text is wList[0] ):
+							row.label(text=text, icon="ERROR")
+						else:
+							row.label(text=text)
+					# layout.label(text="You haven't saved this blend file! Either set a output location or save the file before continuing.", icon="ERROR")
 				if activeScenes == 0:
-					layout.label(text="You must declare at least ONE scene to use the tool.", icon="ERROR")
+					wList = wrapp.wrap(text="You must declare at least ONE scene to use the tool.")
+					for text in wList:
+						row = layout.row(align = True)
+						row.alignment = 'EXPAND'
+						if( text is wList[0] ):
+							row.label(text=text, icon="ERROR")
+						else:
+							row.label(text=text)
 				if not context.scene.mytool.OutputFolderLocation:
-					layout.label(text="A folder output name must be provided for the scenes to be exported to.", icon="ERROR")
+					wList = wrapp.wrap(text="A folder output name must be provided for the scenes to be exported to.")
+					for text in wList:
+						row = layout.row(align = True)
+						row.alignment = 'EXPAND'
+						if( text is wList[0] ):
+							row.label(text=text, icon="ERROR")
+						else:
+							row.label(text=text)
 		 
 		if mytool.IsRendering is True:
 			box = layout.box()
@@ -285,10 +313,10 @@ def register():
 	bpy.types.Scene.ScenesDB = bpy.props.CollectionProperty(type=ListRenderDatabase)
 	bpy.types.Scene.ScenesDBlist_index = bpy.props.IntProperty(name = "List of defined scenes", default = 0)
 	
-	bpy.utils.register_class(UIListDec.MY_UL_List)
-	bpy.utils.register_class(UIListDec.LIST_OT_NewItem)
-	bpy.utils.register_class(UIListDec.LIST_OT_DeleteItem)
-	bpy.utils.register_class(UIListDec.LIST_OT_MoveItem)
+	bpy.utils.register_class(MY_UL_List)
+	bpy.utils.register_class(LIST_OT_NewItem)
+	bpy.utils.register_class(LIST_OT_DeleteItem)
+	bpy.utils.register_class(LIST_OT_MoveItem)
 	
 def unregister():
 	bpy.utils.unregister_class(RenderAllScenes)
@@ -296,7 +324,10 @@ def unregister():
 	bpy.utils.unregister_class(UIProgressData)
 	bpy.utils.unregister_class(ListRenderDatabase)
 	
-	bpy.utils.unregister_class(UIListDec.MY_UL_List)
+	bpy.utils.unregister_class(MY_UL_List)
+	bpy.utils.unregister_class(LIST_OT_NewItem)
+	bpy.utils.unregister_class(LIST_OT_DeleteItem)
+	bpy.utils.unregister_class(LIST_OT_MoveItem)
 	
 	del bpy.types.Scene.mytool
 	

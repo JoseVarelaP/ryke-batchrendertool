@@ -31,14 +31,18 @@ class LIST_OT_NewItem(bpy.types.Operator):
         val = context.scene.ScenesDB.add()
         curFrame = bpy.context.scene.frame_current
         val.name = "scene"
+        val.startFrame = curFrame
+        val.endFrame = curFrame
+
         # If there's a marker on the current spot, get the name of it.
         for m in bpy.context.scene.timeline_markers:
             if m.frame == curFrame:
-                 val.name = m.name
-                 break
+                val.name = m.name
+            # If there so happens to be another marker next to the scene, let's set that as the end of the segment.
+            if m.frame > curFrame:
+                val.endFrame = m.frame
+                break
 
-        val.startFrame = curFrame
-        val.endFrame = curFrame
         val.enabled = True
         return{'FINISHED'}
 

@@ -1,0 +1,44 @@
+schema_version = "1.0.0"
+
+# Example of manifest file for a Blender extension
+# Change the values according to your extension
+id = "rykeshrk_batch_render"
+version = "0.1.0"
+name = "RykeShrk's Batch Render Tool"
+tagline = "Batch render multiple scenes from the same project file into separate folders for post-production editing."
+maintainer = "RykeShrk <contact@rykeshrk.com>"
+# Supported types: "add-on", "theme"
+type = "add-on"
+
+# Optional: add-ons can list which resources they will require:
+# * "files" (for access of any filesystem operations)
+# * "network" (for internet access)
+# * "clipboard" (to read and/or write the system clipboard)
+# * "camera" (to capture photos and videos)
+# * "microphone" (to capture audio)
+permissions = ["files"]
+
+# Optional link to documentation, support, source files, etc
+website = "https://github.com/JoseVarelaP/ryke-batchrendertool/"
+
+# Optional list defined by Blender and server, see:
+# https://docs.blender.org/manual/en/dev/extensions/tags.html
+tags = ["Animation", "Sequencer"]
+
+blender_version_min = "4.1.0"
+# Optional: maximum supported Blender version
+# blender_version_max = "5.1.0"
+
+# License conforming to https://spdx.org/licenses/ (use "SPDX: prefix)
+# https://docs.blender.org/manual/en/dev/extensions/licenses.html
+license = [
+  "SPDX:GPL-2.0-or-later",
+]
+# Optional: required by some licenses.
+copyright = [
+  "2024 RykeShrk",
+]
+
+# Optional list of supported platforms. If omitted, the extension will be available in all operating systems.
+# platforms = ["windows-amd64", "macos-arm64", "linux-x86_64"]
+# Other supported platforms: "windows-arm64", "macos-x86_64"

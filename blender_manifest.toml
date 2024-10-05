@@ -23,7 +23,7 @@ website = "https://github.com/JoseVarelaP/ryke-batchrendertool/"
 
 # Optional list defined by Blender and server, see:
 # https://docs.blender.org/manual/en/dev/extensions/tags.html
-tags = ["Animation", "Sequencer"]
+tags = ["Animation", "Render"]
 
 blender_version_min = "4.1.0"
 # Optional: maximum supported Blender version

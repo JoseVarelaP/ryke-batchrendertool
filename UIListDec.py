@@ -28,7 +28,18 @@ class LIST_OT_NewItem(bpy.types.Operator):
     bl_label = "Add a new item"
     
     def execute(self, context):
-        context.scene.ScenesDB.add()
+        val = context.scene.ScenesDB.add()
+        curFrame = bpy.context.scene.frame_current
+        val.name = "scene"
+        # If there's a marker on the current spot, get the name of it.
+        for m in bpy.context.scene.timeline_markers:
+            if m.frame == curFrame:
+                 val.name = m.name
+                 break
+
+        val.startFrame = curFrame
+        val.endFrame = curFrame
+        val.enabled = True
         return{'FINISHED'}
 
 class LIST_OT_DeleteItem(bpy.types.Operator):

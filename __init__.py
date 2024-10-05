@@ -187,7 +187,7 @@ class RenderAllScenes(bpy.types.Operator):
 				sc.frame_start = currentscene['startFrame']
 				sc.frame_end = currentscene['endFrame']
 				# Change the render file path to the correct location.
-				bpy.context.scene.render.filepath = "//{0}/{1}\\".format(context.scene.mytool.OutputFolderLocation,currentscene['name'])
+				bpy.context.scene.render.filepath = "{0}/{1}\\".format(context.scene.mytool.OutputFolderLocation,currentscene['name'])
 				
 				timestart = str(currentscene['startFrame'])
 				timeend = str(currentscene['endFrame'])
@@ -242,7 +242,7 @@ class UIDemo(bpy.types.Panel):
 				row = box.split(factor=0.3, align=False)
 				col1,col2 = (row.column(),row.column())
 				col1.label(text="Scene Output Location:")
-				col2.label(text="//{0}/{1}\\".format(context.scene.mytool.OutputFolderLocation,item.get('name', '')))
+				col2.label(text="{0}/{1}\\".format(context.scene.mytool.OutputFolderLocation,item.get('name', '')))
 			
 			activeScenes = 0
 			for scene in scene.ScenesDB:

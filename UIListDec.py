@@ -62,6 +62,39 @@ class LIST_OT_DeleteItem(bpy.types.Operator):
         context.scene.ScenesDBlist_index = min(max(0, index - 1), len(ScenesDB) - 1)
         return{'FINISHED'}
 
+class LIST_OT_ImportFromMarkers(bpy.types.Operator):
+    """Creates the list based on the markers on the current scene."""
+    bl_idname = "scenedbmanager.import_from_markers"
+    bl_label = "Creates the list based on the markers on the current scene."
+        
+    def execute(self, context):
+        ScenesDB = context.scene.ScenesDB
+        ScenesDB.clear()
+
+        arraymarker = []
+        markers = bpy.context.scene.timeline_markers
+
+        for i in range(len(markers)):
+            m = markers[i]
+            arraymarker.append({ 'name': m.name, 'frame': m.frame })
+
+        arraymarker.sort( key=lambda x: x['frame'] )
+
+        for i in range(len(arraymarker)):
+            val = context.scene.ScenesDB.add()
+            m = arraymarker[i]
+            val.name = m['name']
+            val.startFrame = m['frame']
+            val.enabled = True
+
+            if (i+1) < len(arraymarker):
+                nextmarker = arraymarker[i+1]
+                val.endFrame = nextmarker['frame']
+            else:
+                val.endFrame = bpy.context.scene.frame_end
+
+        return{'FINISHED'}
+
 class LIST_OT_MoveItem(bpy.types.Operator):
     """Move an item in the list."""
     bl_idname = "scenedbmanager.move_item"

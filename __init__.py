@@ -11,7 +11,7 @@ import textwrap
 wrapp = textwrap.TextWrapper(width=70)
 
 # Import UI classes for the list
-from . UIListDec import (MY_UL_List, LIST_OT_NewItem, LIST_OT_DeleteItem, LIST_OT_MoveItem)
+from . UIListDec import (MY_UL_List, LIST_OT_NewItem, LIST_OT_DeleteItem, LIST_OT_MoveItem, LIST_OT_ImportFromMarkers)
 
 def ui_update(self, context):
 	for region in context.area.regions:
@@ -317,6 +317,7 @@ def register():
 	bpy.utils.register_class(LIST_OT_NewItem)
 	bpy.utils.register_class(LIST_OT_DeleteItem)
 	bpy.utils.register_class(LIST_OT_MoveItem)
+	bpy.utils.register_class(LIST_OT_ImportFromMarkers)
 	
 def unregister():
 	bpy.utils.unregister_class(RenderAllScenes)
@@ -328,6 +329,7 @@ def unregister():
 	bpy.utils.unregister_class(LIST_OT_NewItem)
 	bpy.utils.unregister_class(LIST_OT_DeleteItem)
 	bpy.utils.unregister_class(LIST_OT_MoveItem)
+	bpy.utils.unregister_class(LIST_OT_ImportFromMarkers)
 	
 	del bpy.types.Scene.mytool
 	

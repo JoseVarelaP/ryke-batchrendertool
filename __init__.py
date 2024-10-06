@@ -1,6 +1,6 @@
 bl_info = {
 	"name": "RykeShrk's Batch Render Tool",
-	"blender": (4, 2, 0),
+	"blender": (4, 1, 0),
 	"category": "Object",
 }
 

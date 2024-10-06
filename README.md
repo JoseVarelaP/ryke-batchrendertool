@@ -1,4 +1,4 @@
-# RykeShrk's Batch Render tool
+# RykeShrk's Batch Render Tool
 
 A blender extension that allows you to render out specific sections of a singular scene onto different folders.
 

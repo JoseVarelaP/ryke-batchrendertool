@@ -26,12 +26,14 @@ Once installed, you'll see the tool located on the Render section of the Propert
 
 ### General Settings
 
-#### Output Folder Location
-Sets the global folder location where every scene will be saved to. Think of it as the starting location. Every scene will be stored as folders inside that folder.
+- **Output Folder Location**
+    
+    Sets the global folder location where every scene will be saved to. Think of it as the starting location. Every scene will be stored as folders inside that folder.
 
-#### Defined scenes
-This is where you'll declare which scenes will be rendered out, their name and how long they will be.
-Use the Plus and Minus buttons to add a new scene and to delete one. Or the "Import from Markers" option to generate them automatically based on the markers you've set on the timeline.
+- **Defined scenes**
+    
+    This is where you'll declare which scenes will be rendered out, their name and how long they will be.
+    Use the Plus and Minus buttons to add a new scene and to delete one. Or the "Import from Markers" option to generate them automatically based on the markers you've set on the timeline.
 
 ### Managing a scene
 
@@ -39,14 +41,26 @@ When selecting a scene, extra options will be shown below those buttons.
 
 ![Render Tool, with one item featuring inserted information.](./docs/viewoneitem.png)
 
-#### Scene Name
-What's the name of the scene? This will the the name of the folder it will output to.
+- **Scene Name**
+    
+    What's the name of the scene? This will the the name of the folder it will output to.
 
-#### Render Scene?
-Tells the extension if it should render this scene on the batch.
+- **Render Scene?**
+    
+    Tells the extension if it should render this scene on the batch.
 
-#### Start/End frame
-Define where the scene starts and ends.
+- **Start/End frame**
+    
+    Define where the scene starts and ends.
 	
-#### Scene Output Location
-This is an automatic label that will display where the final location of this scene will be rendered out to.
+- **Scene Output Location**
+    
+    This is an automatic label that will display where the final location of this scene will be rendered out to.
+
+### Rendering
+
+Once you've checked your settings, you can click the "Render Selected Scenes" button and let the tool take care of rendering, exporting and organizing. The interface will update to showcase current progress.
+
+***Note:*** Blender doesn't provide an API call to cancel out renders, so to cancel the operation, you need to press ESC on the render viewport. This is detailed below the progress bar as a tip.
+
+![](./docs/viewrendering.png)

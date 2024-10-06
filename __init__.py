@@ -11,7 +11,12 @@ import textwrap
 wrapp = textwrap.TextWrapper(width=70)
 
 # Import UI classes for the list
-from . UIListDec import (MY_UL_List, LIST_OT_NewItem, LIST_OT_DeleteItem, LIST_OT_MoveItem, LIST_OT_ImportFromMarkers)
+from . UIListDec import (
+	MY_UL_List, LIST_OT_NewItem,
+	LIST_OT_DeleteItem,
+	LIST_OT_MoveItem,
+	LIST_OT_ImportFromMarkers,
+	LIST_OT_SearchForFolder)
 
 def ui_update(self, context):
 	for region in context.area.regions:
@@ -187,7 +192,7 @@ class RenderAllScenes(bpy.types.Operator):
 				sc.frame_start = currentscene['startFrame']
 				sc.frame_end = currentscene['endFrame']
 				# Change the render file path to the correct location.
-				bpy.context.scene.render.filepath = "{0}/{1}\\".format(context.scene.mytool.OutputFolderLocation,currentscene['name'])
+				bpy.context.scene.render.filepath = "{0}{1}\\".format(context.scene.mytool.OutputFolderLocation,currentscene['name'])
 				
 				timestart = str(currentscene['startFrame'])
 				timeend = str(currentscene['endFrame'])
@@ -218,18 +223,20 @@ class UIDemo(bpy.types.Panel):
 		mytool = scene.mytool
 		
 		if mytool.IsRendering is False:
-			row = layout.row()
-			row.prop(mytool, "OutputFolderLocation")
+			row = layout.row(align=True)
+
+			row.prop(mytool, "OutputFolderLocation", text='')
+			row.operator('scenedbmanager.search_for_folder', text='', icon='FILE_FOLDER')
 			layout.label(text="Defined Scenes:")
 			row = layout.row()
 			row.template_list("MY_UL_List", "The_List", scene, "ScenesDB", scene, "ScenesDBlist_index")
 			
-			row = layout.row()
-			row.operator('scenedbmanager.new_item', text='New')
-			row.operator('scenedbmanager.delete_item', text='Remove')
+			row = layout.row(align=True)
+			row.operator('scenedbmanager.new_item', text='New', icon='ADD')
+			row.operator('scenedbmanager.delete_item', text='Remove', icon='X')
 
 			row = layout.row()
-			row.operator('scenedbmanager.import_from_markers', text='Import from Markers')
+			row.operator('scenedbmanager.import_from_markers', text='Import from Markers', icon='MARKER')
 			
 			if scene.ScenesDBlist_index >= 0 and scene.ScenesDB: 
 				item = scene.ScenesDB[scene.ScenesDBlist_index]
@@ -237,7 +244,7 @@ class UIDemo(bpy.types.Panel):
 				row.prop(item, "name")
 				row = layout.row()
 				row.prop(item, "enabled", text="Render Scene?")
-				row = layout.row()
+				row = layout.row(align=True)
 				row.prop(item, "startFrame")
 				row.prop(item, "endFrame")
 
@@ -245,7 +252,7 @@ class UIDemo(bpy.types.Panel):
 				row = box.split(factor=0.3, align=False)
 				col1,col2 = (row.column(),row.column())
 				col1.label(text="Scene Output Location:")
-				col2.label(text="{0}/{1}\\".format(context.scene.mytool.OutputFolderLocation,item.get('name', '')))
+				col2.label(text="{0}{1}\\".format(context.scene.mytool.OutputFolderLocation,item.get('name', '')))
 			
 			activeScenes = 0
 			for scene in scene.ScenesDB:
@@ -321,6 +328,7 @@ def register():
 	bpy.utils.register_class(LIST_OT_DeleteItem)
 	bpy.utils.register_class(LIST_OT_MoveItem)
 	bpy.utils.register_class(LIST_OT_ImportFromMarkers)
+	bpy.utils.register_class(LIST_OT_SearchForFolder)
 	
 def unregister():
 	bpy.utils.unregister_class(RenderAllScenes)
@@ -333,6 +341,7 @@ def unregister():
 	bpy.utils.unregister_class(LIST_OT_DeleteItem)
 	bpy.utils.unregister_class(LIST_OT_MoveItem)
 	bpy.utils.unregister_class(LIST_OT_ImportFromMarkers)
+	bpy.utils.unregister_class(LIST_OT_SearchForFolder)
 	
 	del bpy.types.Scene.mytool
 	

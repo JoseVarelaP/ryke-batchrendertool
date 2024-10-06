@@ -4,6 +4,14 @@ https://sinestesia.co/blog/tutorials/using-uilists-in-blender/
 """
 
 import bpy
+
+def ShowMessageBox(message = "", title = "Message Box", icon = 'INFO'):
+
+    def draw(self, context):
+        self.layout.label(text=message)
+
+    bpy.context.window_manager.popup_menu(draw, title = title, icon = icon)
+
 class MY_UL_List(bpy.types.UIList):
     """Demo UIList."""
     def draw_item(self, context, layout, data, item, icon, active_data, active_propname, index):
@@ -69,10 +77,14 @@ class LIST_OT_ImportFromMarkers(bpy.types.Operator):
         
     def execute(self, context):
         ScenesDB = context.scene.ScenesDB
-        ScenesDB.clear()
+        markers = bpy.context.scene.timeline_markers
+
+        if not markers:
+            ShowMessageBox("No markers were found!", "RykeShrk's Batch Render Tool")
+            return{'FINISHED'}
 
         arraymarker = []
-        markers = bpy.context.scene.timeline_markers
+        ScenesDB.clear()
 
         for i in range(len(markers)):
             m = markers[i]
@@ -121,3 +133,27 @@ class LIST_OT_MoveItem(bpy.types.Operator):
         ScenesDB.move(neighbor, index)
         self.move_index()
         return{'FINISHED'}
+
+class LIST_OT_SearchForFolder(bpy.types.Operator):
+    bl_idname = "scenedbmanager.search_for_folder"
+    bl_label = "Select Folder"
+    bl_options = {'REGISTER'}
+
+    directory: bpy.props.StringProperty(
+        name="Outdir Path",
+        description="Where its gonna be"
+    )
+
+    filter_folder: bpy.props.BoolProperty(
+        default=True,
+        options={'HIDDEN'}
+    )
+
+    def execute(self, context):
+        print("I got ", self.directory)
+        bpy.context.scene.mytool.OutputFolderLocation = self.directory
+        return{'FINISHED'}
+
+    def invoke(self, context, event):
+        context.window_manager.fileselect_add(self)
+        return {'RUNNING_MODAL'}

@@ -31,7 +31,7 @@ class MY_UL_List(bpy.types.UIList):
             layout.label(text="", icon = custom_icon)
 
 class LIST_OT_NewItem(bpy.types.Operator):
-    """Add a new item to the list."""
+    """Add a new item to the list"""
     bl_idname = "scenedbmanager.new_item"
     bl_label = "Add a new item"
     
@@ -55,7 +55,7 @@ class LIST_OT_NewItem(bpy.types.Operator):
         return{'FINISHED'}
 
 class LIST_OT_DeleteItem(bpy.types.Operator):
-    """Delete the selected item from the list."""
+    """Delete the selected item from the list"""
     bl_idname = "scenedbmanager.delete_item"
     bl_label = "Deletes an item"
     
@@ -71,9 +71,9 @@ class LIST_OT_DeleteItem(bpy.types.Operator):
         return{'FINISHED'}
 
 class LIST_OT_ImportFromMarkers(bpy.types.Operator):
-    """Creates the list based on the markers on the current scene."""
+    """Creates the list based on the markers on the current scene"""
     bl_idname = "scenedbmanager.import_from_markers"
-    bl_label = "Creates the list based on the markers on the current scene."
+    bl_label = "Import from Markers"
         
     def execute(self, context):
         ScenesDB = context.scene.ScenesDB

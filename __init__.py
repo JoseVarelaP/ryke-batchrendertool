@@ -230,13 +230,22 @@ class UIDemo(bpy.types.Panel):
 			layout.label(text="Defined Scenes:")
 			row = layout.row()
 			row.template_list("MY_UL_List", "The_List", scene, "ScenesDB", scene, "ScenesDBlist_index")
-			
+
+			col = row.column(align=True)
+
+			col.operator('scenedbmanager.new_item', text='', icon='ADD')
+			col.operator('scenedbmanager.delete_item', text='', icon='REMOVE')
+
+			col = col.row(align=True)
+
+			col.operator('scenedbmanager.import_from_markers', text='', icon='MARKER')
+
 			row = layout.row(align=True)
-			row.operator('scenedbmanager.new_item', text='New', icon='ADD')
-			row.operator('scenedbmanager.delete_item', text='Remove', icon='X')
+			#row.operator('scenedbmanager.new_item', text='New', icon='ADD')
+			#row.operator('scenedbmanager.delete_item', text='Remove', icon='X')
 
 			row = layout.row()
-			row.operator('scenedbmanager.import_from_markers', text='Import from Markers', icon='MARKER')
+			#row.operator('scenedbmanager.import_from_markers', text='Import from Markers', icon='MARKER')
 			
 			if scene.ScenesDBlist_index >= 0 and scene.ScenesDB: 
 				item = scene.ScenesDB[scene.ScenesDBlist_index]
@@ -264,16 +273,6 @@ class UIDemo(bpy.types.Panel):
 				layout.operator(RenderAllScenes.bl_idname, icon="VIEW_CAMERA")
 			else:
 				### TODO: This can be optimized into its own method.
-				if not bpy.data.is_saved:
-					wList = wrapp.wrap(text="You haven't saved this blend file! Either set a output location or save the file before continuing.")
-					for text in wList:
-						row = layout.row(align = True)
-						row.alignment = 'EXPAND'
-						if( text is wList[0] ):
-							row.label(text=text, icon="ERROR")
-						else:
-							row.label(text=text)
-					# layout.label(text="You haven't saved this blend file! Either set a output location or save the file before continuing.", icon="ERROR")
 				if activeScenes == 0:
 					wList = wrapp.wrap(text="You must declare at least ONE scene to use the tool.")
 					for text in wList:

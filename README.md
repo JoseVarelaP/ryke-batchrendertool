@@ -31,7 +31,7 @@ Sets the global folder location where every scene will be saved to. Think of it 
 
 #### Defined scenes
 This is where you'll declare which scenes will be rendered out, their name and how long they will be.
-Use the New and Remove buttons to add a new scene and to delete one. Or the "Import from Markers" option to generate them automatically based on the markers you've set on the timeline.
+Use the Plus and Minus buttons to add a new scene and to delete one. Or the "Import from Markers" option to generate them automatically based on the markers you've set on the timeline.
 
 ### Managing a scene
 

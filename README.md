@@ -8,12 +8,12 @@ Mainly done given that this is my workflow for animations and it was getting ann
 
 ### Automatic install
 
-Download the extension from my [website](https://rykeshrk.com/blender-add/batchrendertool/), and just drag and drop the install button onto the viewport!
+Download the extension from my [website](https://rykeshrk.com/blender-add/), and just drag and drop the install button onto the viewport!
 You'll be prompted to install it once you let go.
 
 ### Manual install
 
-- Download the extension from my [website](https://rykeshrk.com/blender-add/batchrendertool/) or the releases page.
+- Download the extension from my [website](https://rykeshrk.com/blender-add/) or the [releases](https://github.com/JoseVarelaP/ryke-batchrendertool/releases) page.
 - Open the extensions panel on Blender's Preferences.
 - Click on the small dropdown button on the top left corner of the window and click "Install from Disk..."
 - Select the zip file containing the extension.

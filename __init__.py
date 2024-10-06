@@ -54,6 +54,7 @@ class UIDemo(bpy.types.Panel):
 			col.operator('scenedbmanager.new_item', text='', icon='ADD')
 			col.operator('scenedbmanager.delete_item', text='', icon='REMOVE')
 
+			col.separator()
 			col = col.row(align=True)
 
 			col.operator('scenedbmanager.import_from_markers', text='', icon='MARKER')
@@ -111,11 +112,13 @@ class UIDemo(bpy.types.Panel):
 							row.label(text=text)
 		 
 		if mytool.IsRendering is True:
+
 			box = layout.box()
-			row = box.split(factor=0.3, align=False)
-			col1,col2 = (row.column(),row.column())
-			col1.label(text="Overall Progress:")
-			col2.progress(factor=mytool.CurJob, text=mytool.JobsLeft)
+			#row = box.split(factor=0.3, align=False)
+			#col1,col2 = (row.column(),row.column())
+			#box.label(text="Overall Progress:")
+			box.progress(factor=mytool.CurJob, text=mytool.JobsLeft)
+			box.label(text="Total Time: {}".format(mytool.UITotalTimeSpent))
 			layout.row().separator()
 			#layout.prop(mytool, "UIcurStatus")
 			
@@ -123,7 +126,7 @@ class UIDemo(bpy.types.Panel):
 			box.prop(mytool, "UIcurScene")
 			box.progress(factor=mytool.UIcurRenderProgress, text=mytool.UIcurStatus)
 			layout.row().separator()
-			col1.label(text="Total Time: {}".format(mytool.UITotalTimeSpent))
+			#col1.label(text="Total Time: {}".format(mytool.UITotalTimeSpent))
 			layout.row().separator()
 			
 			layout.label(text="Tip: Press ESC on the render to cancel.", icon="INFO")

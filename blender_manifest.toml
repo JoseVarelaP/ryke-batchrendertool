@@ -1,6 +1,6 @@
 schema_version = "1.0.0"
 id = "rykeshrk_batch_render"
-version = "0.1.3"
+version = "0.1.4"
 name = "RykeShrk's Batch Render Tool"
 tagline = "Batch render multiple scenes from the same project file into separate folders for post-production editing."
 maintainer = "RykeShrk <contact@rykeshrk.com/jose@josevarela.net>"

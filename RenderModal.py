@@ -1,7 +1,7 @@
 import bpy
 from datetime import datetime
 
-class RenderAllScenes(bpy.types.Operator):
+class RYK_OP_RenderAllScenes(bpy.types.Operator):
 	bl_idname = "render.allscenes"
 	bl_label = "Render Selected Scenes"
 	
@@ -16,7 +16,7 @@ class RenderAllScenes(bpy.types.Operator):
 	TIMERStartTime = datetime.now()
 	
 	def render_init(self, scene, depsgraph):
-		scene.mytool.IsRendering = True
+		scene.rykbatchrender.IsRendering = True
 		
 	def render_complete(self, scene, depsgraph):
 		self.render_queue.pop(0)
@@ -25,7 +25,7 @@ class RenderAllScenes(bpy.types.Operator):
 	def render_cancel(self, scene, depsgraph):
 		self.cancel_render = True
 		print("RENDER CANCEL")
-		scene.mytool.IsRendering = False
+		scene.rykbatchrender.IsRendering = False
 		
 	def render_post(self, scene, despgraph):
 		# Get the current frame that we're in, and report the current progress from that.
@@ -33,8 +33,8 @@ class RenderAllScenes(bpy.types.Operator):
 		curFrameInSequence = (curFrame - self.render_queue[0]['startFrame'])
 		lastFrameInSequence = (self.render_queue[0]['endFrame'] - self.render_queue[0]['startFrame'])
 		
-		scene.mytool.UIcurRenderProgress = ( curFrameInSequence/lastFrameInSequence )
-		scene.mytool.UIcurStatus = "Rendering frame {} of {} ({:3.2f}%)".format(
+		scene.rykbatchrender.UIcurRenderProgress = ( curFrameInSequence/lastFrameInSequence )
+		scene.rykbatchrender.UIcurStatus = "Rendering frame {} of {} ({:3.2f}%)".format(
 			curFrameInSequence+1, lastFrameInSequence+1, ( curFrameInSequence/lastFrameInSequence ) * 100
 		)
 		
@@ -45,11 +45,11 @@ class RenderAllScenes(bpy.types.Operator):
 		
 		## Update UI Info
 		self.TIMERStartTime = datetime.now()
-		context.scene.mytool.UIcurRenderProgress = 0.0
-		context.scene.mytool.UIcurScene = ""
-		context.scene.mytool.UIcurStatus = ""
-		context.scene.mytool.UITotalTimeSpent = ""
-		context.scene.mytool.CurJob = -1
+		context.scene.rykbatchrender.UIcurRenderProgress = 0.0
+		context.scene.rykbatchrender.UIcurScene = ""
+		context.scene.rykbatchrender.UIcurStatus = ""
+		context.scene.rykbatchrender.UITotalTimeSpent = ""
+		context.scene.rykbatchrender.CurJob = -1
 		
 		#################################
 		
@@ -61,7 +61,7 @@ class RenderAllScenes(bpy.types.Operator):
 		
 		self.total = len(self.render_queue)
 		
-		context.scene.mytool.TotalJobs = self.total
+		context.scene.rykbatchrender.TotalJobs = self.total
 		
 		#################################
 		
@@ -92,12 +92,12 @@ class RenderAllScenes(bpy.types.Operator):
 	def modal(self, context, event):
 		if event.type == 'ESC':
 			bpy.types.RenderSettings.use_lock_interface = False
-			context.scene.mytool.IsRendering = False
+			context.scene.rykbatchrender.IsRendering = False
 			print("CANCELLED")
 			return {'CANCELLED'}
 		elif event.type == 'TIMER':
 			## Update the total time.
-			context.scene.mytool.UITotalTimeSpent = str(datetime.now() - self.TIMERStartTime)
+			context.scene.rykbatchrender.UITotalTimeSpent = str(datetime.now() - self.TIMERStartTime)
 			
 			if len(self.render_queue) == 0 or self.cancel_render is True:
 				
@@ -111,7 +111,7 @@ class RenderAllScenes(bpy.types.Operator):
 				context.window_manager.event_timer_remove(self.timer_event)
 				
 				bpy.types.RenderSettings.use_lock_interface = False
-				context.scene.mytool.IsRendering = False
+				context.scene.rykbatchrender.IsRendering = False
 				
 				print("FINISHED")
 				return {'FINISHED'}
@@ -125,17 +125,17 @@ class RenderAllScenes(bpy.types.Operator):
 				sc.frame_start = currentscene['startFrame']
 				sc.frame_end = currentscene['endFrame']
 				# Change the render file path to the correct location.
-				bpy.context.scene.render.filepath = "{0}{1}\\".format(context.scene.mytool.OutputFolderLocation,currentscene['name'])
+				bpy.context.scene.render.filepath = "{0}{1}\\".format(context.scene.rykbatchrender.OutputFolderLocation,currentscene['name'])
 				
 				timestart = str(currentscene['startFrame'])
 				timeend = str(currentscene['endFrame'])
 				scenename = currentscene['name']
 				
 				## Update UI Info
-				sc.mytool.UIcurScene = scenename
-				sc.mytool.CurJob = (self.total - len(self.render_queue)) / self.total
-				sc.mytool.JobsLeft = "{} {} completed of {}.".format(self.total - len(self.render_queue), "job" if (self.total - len(self.render_queue)) == 1 else "jobs" , self.total)
-				print(sc.mytool.CurJob)
+				sc.rykbatchrender.UIcurScene = scenename
+				sc.rykbatchrender.CurJob = (self.total - len(self.render_queue)) / self.total
+				sc.rykbatchrender.JobsLeft = "{} {} completed of {}.".format(self.total - len(self.render_queue), "job" if (self.total - len(self.render_queue)) == 1 else "jobs" , self.total)
+				print(sc.rykbatchrender.CurJob)
 				
 				# And now, render!
 				bpy.ops.render.render('INVOKE_DEFAULT', animation=True, write_still=True)

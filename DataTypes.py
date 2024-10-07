@@ -6,7 +6,7 @@ def ui_update(self, context):
 			region.tag_redraw()
 	return None
 	
-class UIProgressData(bpy.types.PropertyGroup):
+class RYK_PG_ProgressData(bpy.types.PropertyGroup):
 	UIcurRenderProgress: bpy.props.FloatProperty( name="Progress", default=0, update=ui_update )
 	UIcurScene: bpy.props.StringProperty( name="Cur Scene", default="", set=None, update=ui_update )
 	UIcurStatus: bpy.props.StringProperty( name="Status", default="", update=ui_update )
@@ -25,7 +25,7 @@ Scene Declarations
 
 This class will keep track of the scenes that the user wants to render out.
 """
-class ListRenderDatabase(bpy.types.PropertyGroup):
+class RYK_PG_ListRenderDatabase(bpy.types.PropertyGroup):
 	name: bpy.props.StringProperty(
 		name="Scene Name",
 		description="Name for the scene. This name will be used during export",
@@ -35,13 +35,15 @@ class ListRenderDatabase(bpy.types.PropertyGroup):
 	startFrame: bpy.props.IntProperty(
 		name="Start Frame",
 		description="Declare the starting point for this scene",
-		default=1
+		default=1,
+		min=0
 	)
 	
 	endFrame: bpy.props.IntProperty(
 		name="End Frame",
 		description="Declare the ending point for this scene",
-		default=1
+		default=1,
+		min=0
 	)
 	
 	enabled: bpy.props.BoolProperty(

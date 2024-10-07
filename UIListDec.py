@@ -12,7 +12,7 @@ def ShowMessageBox(message = "", title = "Message Box", icon = 'INFO'):
 
     bpy.context.window_manager.popup_menu(draw, title = title, icon = icon)
 
-class MY_UL_List(bpy.types.UIList):
+class RYK_UI_ScenesListView(bpy.types.UIList):
     """Demo UIList."""
     def draw_item(self, context, layout, data, item, icon, active_data, active_propname, index):
         # We could write some code to decide which icon to use here...
@@ -30,7 +30,7 @@ class MY_UL_List(bpy.types.UIList):
             layout.alignment = 'CENTER'
             layout.label(text="", icon = custom_icon)
 
-class LIST_OT_NewItem(bpy.types.Operator):
+class RYK_OT_NewItem(bpy.types.Operator):
     """Add a new item to the list"""
     bl_idname = "scenedbmanager.new_item"
     bl_label = "Add a new item"
@@ -54,7 +54,7 @@ class LIST_OT_NewItem(bpy.types.Operator):
         val.enabled = True
         return{'FINISHED'}
 
-class LIST_OT_DeleteItem(bpy.types.Operator):
+class RYK_OT_DeleteItem(bpy.types.Operator):
     """Delete the selected item from the list"""
     bl_idname = "scenedbmanager.delete_item"
     bl_label = "Deletes an item"
@@ -70,7 +70,7 @@ class LIST_OT_DeleteItem(bpy.types.Operator):
         context.scene.ScenesDBlist_index = min(max(0, index - 1), len(ScenesDB) - 1)
         return{'FINISHED'}
 
-class LIST_OT_ImportFromMarkers(bpy.types.Operator):
+class RYK_OT_ImportFromMarkers(bpy.types.Operator):
     """Creates the list based on the markers on the current scene"""
     bl_idname = "scenedbmanager.import_from_markers"
     bl_label = "Import from Markers"
@@ -107,34 +107,7 @@ class LIST_OT_ImportFromMarkers(bpy.types.Operator):
 
         return{'FINISHED'}
 
-class LIST_OT_MoveItem(bpy.types.Operator):
-    """Move an item in the list."""
-    bl_idname = "scenedbmanager.move_item"
-    bl_label = "Move an item in the list"
-    direction = bpy.props.EnumProperty(items=(('UP', 'Up', ""), ('DOWN', 'Down', ""),))
-    
-    @classmethod
-    def poll(cls, context):
-        return context.scene.ScenesDB
-        
-    def move_index(self):
-        """ Move index of an item render queue while clamping it. """
-
-        index = bpy.context.scene.ScenesDBlist_index
-        list_length = len(bpy.context.scene.ScenesDB) - 1 # (index starts at 0)
-        new_index = index + (-1 if self.direction == 'UP' else 1)
-        
-        bpy.context.scene.ScenesDBlist_index = max(0, min(new_index, list_length))
-        
-    def execute(self, context):
-        ScenesDB = context.scene.ScenesDB
-        index = context.scene.ScenesDBlist_index
-        neighbor = index + (-1 if self.direction == 'UP' else 1)
-        ScenesDB.move(neighbor, index)
-        self.move_index()
-        return{'FINISHED'}
-
-class LIST_OT_SearchForFolder(bpy.types.Operator):
+class RYK_OT_SearchForFolder(bpy.types.Operator):
     bl_idname = "scenedbmanager.search_for_folder"
     bl_label = "Select Folder"
     bl_options = {'REGISTER'}
@@ -151,7 +124,7 @@ class LIST_OT_SearchForFolder(bpy.types.Operator):
 
     def execute(self, context):
         print("I got ", self.directory)
-        bpy.context.scene.mytool.OutputFolderLocation = self.directory
+        bpy.context.scene.rykbatchrender.OutputFolderLocation = self.directory
         return{'FINISHED'}
 
     def invoke(self, context, event):

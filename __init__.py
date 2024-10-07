@@ -12,14 +12,13 @@ wrapp = textwrap.TextWrapper(width=70)
 
 # Import UI classes for the list
 from . UIListDec import (
-	MY_UL_List, LIST_OT_NewItem,
-	LIST_OT_DeleteItem,
-	LIST_OT_MoveItem,
-	LIST_OT_ImportFromMarkers,
-	LIST_OT_SearchForFolder)
+	RYK_UI_ScenesListView, RYK_OT_NewItem,
+	RYK_OT_DeleteItem,
+	RYK_OT_ImportFromMarkers,
+	RYK_OT_SearchForFolder)
 
-from . RenderModal import ( RenderAllScenes )
-from . DataTypes import ( UIProgressData, ListRenderDatabase )
+from . RenderModal import ( RYK_OP_RenderAllScenes )
+from . DataTypes import ( RYK_PG_ProgressData, RYK_PG_ListRenderDatabase )
 
 def ui_update(self, context):
 	for region in context.area.regions:
@@ -27,7 +26,7 @@ def ui_update(self, context):
 			region.tag_redraw()
 	return None
 
-class UIDemo(bpy.types.Panel):
+class RYK_UI_Menu(bpy.types.Panel):
 	bl_label = "RykeShrk's Batch Render Tool"
 	bl_idname = "render.progressCustom"
 	bl_space_type = 'PROPERTIES'
@@ -38,16 +37,16 @@ class UIDemo(bpy.types.Panel):
 		scene = context.scene
 		layout = self.layout
 		
-		mytool = scene.mytool
+		rykbatchrender = scene.rykbatchrender
 		
-		if mytool.IsRendering is False:
+		if rykbatchrender.IsRendering is False:
 			row = layout.row(align=True)
 
-			row.prop(mytool, "OutputFolderLocation", text='')
+			row.prop(rykbatchrender, "OutputFolderLocation", text='')
 			row.operator('scenedbmanager.search_for_folder', text='', icon='FILE_FOLDER')
 			layout.label(text="Defined Scenes:")
 			row = layout.row()
-			row.template_list("MY_UL_List", "The_List", scene, "ScenesDB", scene, "ScenesDBlist_index")
+			row.template_list("RYK_UI_ScenesListView", "The_List", scene, "ScenesDB", scene, "ScenesDBlist_index")
 
 			col = row.column(align=True)
 
@@ -87,9 +86,9 @@ class UIDemo(bpy.types.Panel):
 				if scene.get("enabled", False):
 					activeScenes += 1
 					
-			if activeScenes > 0 and context.scene.mytool.OutputFolderLocation:
+			if activeScenes > 0 and context.scene.rykbatchrender.OutputFolderLocation:
 				row = layout.row()
-				layout.operator(RenderAllScenes.bl_idname, icon="VIEW_CAMERA")
+				layout.operator(RYK_OP_RenderAllScenes.bl_idname, icon="VIEW_CAMERA")
 			else:
 				### TODO: This can be optimized into its own method.
 				if activeScenes == 0:
@@ -101,7 +100,7 @@ class UIDemo(bpy.types.Panel):
 							row.label(text=text, icon="ERROR")
 						else:
 							row.label(text=text)
-				if not context.scene.mytool.OutputFolderLocation:
+				if not context.scene.rykbatchrender.OutputFolderLocation:
 					wList = wrapp.wrap(text="A folder output name must be provided for the scenes to be exported to.")
 					for text in wList:
 						row = layout.row(align = True)
@@ -111,59 +110,57 @@ class UIDemo(bpy.types.Panel):
 						else:
 							row.label(text=text)
 		 
-		if mytool.IsRendering is True:
+		if rykbatchrender.IsRendering is True:
 
 			box = layout.box()
 			#row = box.split(factor=0.3, align=False)
 			#col1,col2 = (row.column(),row.column())
 			#box.label(text="Overall Progress:")
-			box.progress(factor=mytool.CurJob, text=mytool.JobsLeft)
-			box.label(text="Total Time: {}".format(mytool.UITotalTimeSpent))
+			box.progress(factor=rykbatchrender.CurJob, text=rykbatchrender.JobsLeft)
+			box.label(text="Total Time: {}".format(rykbatchrender.UITotalTimeSpent))
 			layout.row().separator()
-			#layout.prop(mytool, "UIcurStatus")
+			#layout.prop(rykbatchrender, "UIcurStatus")
 			
 			box = layout.box()
-			box.prop(mytool, "UIcurScene")
-			box.progress(factor=mytool.UIcurRenderProgress, text=mytool.UIcurStatus)
+			box.prop(rykbatchrender, "UIcurScene")
+			box.progress(factor=rykbatchrender.UIcurRenderProgress, text=rykbatchrender.UIcurStatus)
 			layout.row().separator()
-			#col1.label(text="Total Time: {}".format(mytool.UITotalTimeSpent))
+			#col1.label(text="Total Time: {}".format(rykbatchrender.UITotalTimeSpent))
 			layout.row().separator()
 			
 			layout.label(text="Tip: Press ESC on the render to cancel.", icon="INFO")
 
 def register():
-	bpy.utils.register_class(RenderAllScenes)
-	bpy.utils.register_class(UIDemo)
+	bpy.utils.register_class(RYK_OP_RenderAllScenes)
+	bpy.utils.register_class(RYK_UI_Menu)
 	
-	bpy.utils.register_class(UIProgressData)
-	bpy.types.Scene.mytool = bpy.props.PointerProperty(type=UIProgressData)
+	bpy.utils.register_class(RYK_PG_ProgressData)
+	bpy.types.Scene.rykbatchrender = bpy.props.PointerProperty(type=RYK_PG_ProgressData)
 	
 	# Register the scene database.
-	bpy.utils.register_class(ListRenderDatabase)
-	bpy.types.Scene.ScenesDB = bpy.props.CollectionProperty(type=ListRenderDatabase)
+	bpy.utils.register_class(RYK_PG_ListRenderDatabase)
+	bpy.types.Scene.ScenesDB = bpy.props.CollectionProperty(type=RYK_PG_ListRenderDatabase)
 	bpy.types.Scene.ScenesDBlist_index = bpy.props.IntProperty(name = "List of defined scenes", default = 0)
 	
-	bpy.utils.register_class(MY_UL_List)
-	bpy.utils.register_class(LIST_OT_NewItem)
-	bpy.utils.register_class(LIST_OT_DeleteItem)
-	bpy.utils.register_class(LIST_OT_MoveItem)
-	bpy.utils.register_class(LIST_OT_ImportFromMarkers)
-	bpy.utils.register_class(LIST_OT_SearchForFolder)
+	bpy.utils.register_class(RYK_UI_ScenesListView)
+	bpy.utils.register_class(RYK_OT_NewItem)
+	bpy.utils.register_class(RYK_OT_DeleteItem)
+	bpy.utils.register_class(RYK_OT_ImportFromMarkers)
+	bpy.utils.register_class(RYK_OT_SearchForFolder)
 	
 def unregister():
-	bpy.utils.unregister_class(RenderAllScenes)
-	bpy.utils.unregister_class(UIDemo)
-	bpy.utils.unregister_class(UIProgressData)
-	bpy.utils.unregister_class(ListRenderDatabase)
+	bpy.utils.unregister_class(RYK_OP_RenderAllScenes)
+	bpy.utils.unregister_class(RYK_UI_Menu)
+	bpy.utils.unregister_class(RYK_PG_ProgressData)
+	bpy.utils.unregister_class(RYK_PG_ListRenderDatabase)
 	
-	bpy.utils.unregister_class(MY_UL_List)
-	bpy.utils.unregister_class(LIST_OT_NewItem)
-	bpy.utils.unregister_class(LIST_OT_DeleteItem)
-	bpy.utils.unregister_class(LIST_OT_MoveItem)
-	bpy.utils.unregister_class(LIST_OT_ImportFromMarkers)
-	bpy.utils.unregister_class(LIST_OT_SearchForFolder)
+	bpy.utils.unregister_class(RYK_UI_ScenesListView)
+	bpy.utils.unregister_class(RYK_OT_NewItem)
+	bpy.utils.unregister_class(RYK_OT_DeleteItem)
+	bpy.utils.unregister_class(RYK_OT_ImportFromMarkers)
+	bpy.utils.unregister_class(RYK_OT_SearchForFolder)
 	
-	del bpy.types.Scene.mytool
+	del bpy.types.Scene.rykbatchrender
 	
 	del bpy.types.Scene.ScenesDB
 	del bpy.types.Scene.ScenesDBlist_index

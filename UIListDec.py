@@ -20,7 +20,8 @@ class RYK_UI_ScenesListView(bpy.types.UIList):
         # Make sure your code supports all 3 layout types
         if self.layout_type in {'DEFAULT', 'COMPACT'}:
             grid = layout.grid_flow(columns=3, align=True, even_columns=False)
-            grid.label(text=item.name, icon = custom_icon)
+            # grid.label(text=item.name, icon = custom_icon)
+            grid.prop(item, "name", text="", icon = custom_icon, emboss=False)
             
             #split = grid.split(factor=0.3, align=False)
             #lf,rt = (split.column(),split.column())
@@ -101,7 +102,7 @@ class RYK_OT_ImportFromMarkers(bpy.types.Operator):
 
             if (i+1) < len(arraymarker):
                 nextmarker = arraymarker[i+1]
-                val.endFrame = nextmarker['frame']
+                val.endFrame = nextmarker['frame']-1
             else:
                 val.endFrame = bpy.context.scene.frame_end
 

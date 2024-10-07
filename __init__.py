@@ -67,8 +67,8 @@ class RYK_UI_Menu(bpy.types.Panel):
 			
 			if scene.ScenesDBlist_index >= 0 and scene.ScenesDB: 
 				item = scene.ScenesDB[scene.ScenesDBlist_index]
-				row = layout.row()
-				row.prop(item, "name")
+				#row = layout.row()
+				#row.prop(item, "name")
 				row = layout.row()
 				row.prop(item, "enabled", text="Render Scene?")
 				row = layout.row(align=True)
@@ -76,10 +76,11 @@ class RYK_UI_Menu(bpy.types.Panel):
 				row.prop(item, "endFrame")
 
 				box = layout.box()
-				row = box.split(factor=0.3, align=False)
-				col1,col2 = (row.column(),row.column())
-				col1.label(text="Scene Output Location:")
-				col2.label(text="{0}{1}\\".format(context.scene.mytool.OutputFolderLocation,item.get('name', '')))
+				col = box.column()
+				#row = box.split(factor=0.3, align=False)
+				#col1,col2 = (row.column(),row.column())
+				col.label(text="Scene Output Location:")
+				col.label(text="{0}{1}\\".format(context.scene.rykbatchrender.OutputFolderLocation,item.get('name', '')))
 			
 			activeScenes = 0
 			for scene in scene.ScenesDB:

@@ -2,10 +2,9 @@ schema_version = "1.0.0"
 id = "rykeshrk_batch_render"
 version = "0.1.4"
 name = "RykeShrk's Batch Render Tool"
-tagline = "Batch render multiple scenes from the same project file into separate folders for post-production editing."
-maintainer = "RykeShrk <contact@rykeshrk.com/jose@josevarela.net>"
+tagline = "Render segments from your scene to separate folders for editing"
+maintainer = "Jose_Varela <jose@josevarela.net>"
 type = "add-on"
-permissions = ["files"]
 
 website = "https://github.com/JoseVarelaP/ryke-batchrendertool/"
 tags = ["Animation", "Render"]
@@ -14,6 +13,7 @@ blender_version_min = "4.1.0"
 license = [
   "SPDX:GPL-3.0-or-later",
 ]
+
 copyright = [
   "2024 RykeShrk/Jose_Varela",
 ]

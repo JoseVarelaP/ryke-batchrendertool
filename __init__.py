@@ -12,7 +12,7 @@ wrapp = textwrap.TextWrapper(width=70)
 
 # Import UI classes for the list
 from . UIListDec import (
-	RYK_UI_ScenesListView, RYK_OT_NewItem,
+	RYK_UL_ScenesListView, RYK_OT_NewItem,
 	RYK_OT_DeleteItem,
 	RYK_OT_ImportFromMarkers,
 	RYK_OT_SearchForFolder)
@@ -28,7 +28,7 @@ def ui_update(self, context):
 
 class RYK_UI_Menu(bpy.types.Panel):
 	bl_label = "RykeShrk's Batch Render Tool"
-	bl_idname = "render.progressCustom"
+	bl_idname = "RYKRENDER_PT_ProgressCustom"
 	bl_space_type = 'PROPERTIES'
 	bl_region_type = 'WINDOW'
 	bl_context = "render"
@@ -46,7 +46,7 @@ class RYK_UI_Menu(bpy.types.Panel):
 			row.operator('scenedbmanager.search_for_folder', text='', icon='FILE_FOLDER')
 			layout.label(text="Defined Scenes:")
 			row = layout.row()
-			row.template_list("RYK_UI_ScenesListView", "The_List", scene, "ScenesDB", scene, "ScenesDBlist_index")
+			row.template_list("RYK_UL_ScenesListView", "The_List", scene, "ScenesDB", scene, "ScenesDBlist_index")
 
 			col = row.column(align=True)
 
@@ -143,7 +143,7 @@ def register():
 	bpy.types.Scene.ScenesDB = bpy.props.CollectionProperty(type=RYK_PG_ListRenderDatabase)
 	bpy.types.Scene.ScenesDBlist_index = bpy.props.IntProperty(name = "List of defined scenes", default = 0)
 	
-	bpy.utils.register_class(RYK_UI_ScenesListView)
+	bpy.utils.register_class(RYK_UL_ScenesListView)
 	bpy.utils.register_class(RYK_OT_NewItem)
 	bpy.utils.register_class(RYK_OT_DeleteItem)
 	bpy.utils.register_class(RYK_OT_ImportFromMarkers)
@@ -155,7 +155,7 @@ def unregister():
 	bpy.utils.unregister_class(RYK_PG_ProgressData)
 	bpy.utils.unregister_class(RYK_PG_ListRenderDatabase)
 	
-	bpy.utils.unregister_class(RYK_UI_ScenesListView)
+	bpy.utils.unregister_class(RYK_UL_ScenesListView)
 	bpy.utils.unregister_class(RYK_OT_NewItem)
 	bpy.utils.unregister_class(RYK_OT_DeleteItem)
 	bpy.utils.unregister_class(RYK_OT_ImportFromMarkers)

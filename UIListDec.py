@@ -12,7 +12,7 @@ def ShowMessageBox(message = "", title = "Message Box", icon = 'INFO'):
 
     bpy.context.window_manager.popup_menu(draw, title = title, icon = icon)
 
-class RYK_UI_ScenesListView(bpy.types.UIList):
+class RYK_UL_ScenesListView(bpy.types.UIList):
     """Demo UIList."""
     def draw_item(self, context, layout, data, item, icon, active_data, active_propname, index):
         # We could write some code to decide which icon to use here...

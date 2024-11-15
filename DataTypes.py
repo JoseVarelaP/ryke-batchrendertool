@@ -1,9 +1,10 @@
 import bpy
 
 def ui_update(self, context):
-	for region in context.area.regions:
-		if region.type == "WINDOW":
-			region.tag_redraw()
+	if context.area is not None:
+		for region in context.area.regions:
+			if region.type == "WINDOW":
+				region.tag_redraw()
 	return None
 	
 class RYK_PG_ProgressData(bpy.types.PropertyGroup):

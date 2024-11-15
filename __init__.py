@@ -21,9 +21,10 @@ from . RenderModal import ( RYK_OP_RenderAllScenes )
 from . DataTypes import ( RYK_PG_ProgressData, RYK_PG_ListRenderDatabase )
 
 def ui_update(self, context):
-	for region in context.area.regions:
-		if region.type == "WINDOW":
-			region.tag_redraw()
+	if context.area is not None:
+		for region in context.area.regions:
+			if region.type == "WINDOW":
+				region.tag_redraw()
 	return None
 
 class RYK_UI_Menu(bpy.types.Panel):
